@@ -14,6 +14,7 @@ class RechargeHistory extends Model
         'price',
         'payment_method',
         'transaction_id',
+        'val_id',
         'status',
     ];
 

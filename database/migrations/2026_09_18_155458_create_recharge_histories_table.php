@@ -11,12 +11,13 @@ return new class extends Migration
         Schema::create('recharge_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shop_id')->constrained()->onDelete('cascade');
-            $table->string('package_name');
+            $table->string('package_name')->nullable();
             $table->integer('sms_amount');
             $table->decimal('price', 10, 2);
-            $table->enum('payment_method', ['bkash', 'nagad', 'rocket']);
-            $table->string('transaction_id');
-            $table->enum('status', ['success', 'pending', 'failed'])->default('success');
+            $table->string('payment_method')->nullable(); // bkash, nagad, card, etc.
+            $table->string('transaction_id')->unique();
+            $table->string('val_id')->nullable(); // SSLCommerz Validation ID
+            $table->enum('status', ['pending', 'success', 'failed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

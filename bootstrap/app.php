@@ -12,7 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Ngrok প্রক্সি থেকে আসা সকল HTTPS হেডার ট্রাস্ট করার জন্য
+        $middleware->trustProxies(at: '*');
+        $middleware->validateCsrfTokens(except: [
+            '/api/payment/success',
+            '/api/payment/fail',
+            '/api/payment/cancel',
+            '/api/payment/ipn',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SmsSchedule extends Model
 {
     protected $fillable = [
-        'shop_id',
-        'customer_id',
-        'message_body',
-        'scheduled_date',
-        'status',
-    ];
+    'shop_id',
+    'customer_id',
+    'message_body',
+    'scheduled_date',
+    'scheduled_time', 
+    'status',
+];
 
     public function shop(): BelongsTo
     {

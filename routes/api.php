@@ -40,9 +40,15 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\CheckUserStatus::class])
     Route::get('/sms/schedules', [SmsWalletController::class, 'getSmsSchedules']);
     Route::post('/sms/schedule', [SmsWalletController::class, 'scheduleSms']);
     Route::delete('/sms/schedules/{id}/cancel', [SmsWalletController::class, 'cancelSmsSchedule']);
+
+    // ওয়ালেট ডাটা, ডাইনামিক প্যাকেজ এবং রিচার্জ হিস্ট্রি রাউট
+    Route::get('/wallet/info', [SmsWalletController::class, 'getWalletInfo']);
+    Route::get('/wallet/packages', [SmsWalletController::class, 'getSmsPackages']);
     
     // ওয়ালেট রিচার্জ রুট (Initiate)
     Route::post('/wallet/recharge', [SmsWalletController::class, 'rechargeWallet']);
+
+    Route::get('/wallet/all-history', [SmsWalletController::class, 'getAllRechargeHistory']);
     
     // বাল্ক SMS তাগাদা পাঠানোর রুট
     Route::post('/customers/send-bulk-reminder-sms', [CustomerController::class, 'sendBulkReminderSms']);

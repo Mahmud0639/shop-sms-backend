@@ -311,4 +311,49 @@ $postData = [
             </html>
         ', 200)->header('Content-Type', 'text/html');
     }
+
+    // ১. ওয়ালেট ব্যালেন্স ও সাম্প্রতিক ৫টি রিচার্জ ইতিহাস পাওয়ার মেথড
+    public function getWalletInfo(Request $request)
+    {
+        $shop = $request->user();
+
+        $history = RechargeHistory::where('shop_id', $shop->id)
+            ->where('status', 'success')
+            ->orderBy('id', 'desc')
+            ->take(5) // প্রধান পেজের জন্য ৫টি আপডেট রাখা হলো
+            ->get();
+
+        return response()->json([
+            'success'            => true,
+            'sms_wallet_balance' => $shop->sms_wallet_balance ?? 0,
+            'recharge_history'   => $history
+        ]);
+    }
+
+    // ২. আগের সব রিচার্জ ইতিহাস পাওয়ার জন্য পেজিনেটেড API মেথড
+    public function getAllRechargeHistory(Request $request)
+    {
+        $shop = $request->user();
+
+        $history = RechargeHistory::where('shop_id', $shop->id)
+            ->where('status', 'success')
+            ->orderBy('id', 'desc')
+            ->paginate(15); // প্রতি পেজে ১৫টি করে ডাটা লোড হবে
+
+        return response()->json([
+            'success' => true,
+            'data'    => $history
+        ]);
+    }
+
+    // ২. ডাইনামিক প্যাকেজ পাওয়ার মেথড
+    public function getSmsPackages()
+    {
+        $packages = \App\Models\SmsPackage::where('is_active', true)->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $packages
+        ]);
+    }
 }
